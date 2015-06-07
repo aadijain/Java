@@ -1,0 +1,50 @@
+
+import java.util.*;
+import java.io.*;
+public class guess
+{
+    public static boolean islarger(int a)
+    {
+        double f=new Random().nextFloat();
+        double r=-1+(2*Math.exp(a)/(1+Math.exp(a)));
+        
+        if(f<r)
+        return true;
+        else
+        return false;
+    }
+    public static void main()
+    {
+        Scanner sc=new Scanner(System.in);
+        Random r=new Random();
+        int ctr=0,sum=0,a,b;
+        int l1=1000000,l2=10000;
+        char ch;
+        System.out.println("\f");
+        //System.out.println("Think of two numbers.");
+        //System.out.println("\nEnter any one of them.");
+        //System.out.println("\nThe program will guess if it was the smaller number or bigger one.")'
+        //System.out.println("\nThen enter y or n according to the guess."+);
+        //System.out.println("\nEnter 0 to stop.");
+        do{
+            ctr++;
+            //a=sc.nextInt();
+            a=r.nextInt(l1);
+            b=r.nextInt(l1);           
+            /*if(issmaller(a))
+            System.out.println("smaller?");
+            else
+            System.out.println("larger?");
+            ch=sc.next().charAt(0);
+            if(ch=='y')*/
+            System.out.println(a+"\t"+b+"\t"+islarger(a)+"\t"+(a>=b)+"\t"+(islarger(a)^(a<=b)));
+            if(islarger(a)^(a<=b))   
+            sum++;     
+        }while(ctr<l2);
+        
+        System.out.println("correct: "+sum);
+        System.out.println("total: "+l2);
+        System.out.println("% correct: "+(sum*100.0/l2));
+        
+    }
+}
