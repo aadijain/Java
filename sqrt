@@ -1,0 +1,23 @@
+public class square_root
+{
+    public static void calc(int n)
+    {
+     System.out.println("\f\nActual sqrt:     \t"+Math.sqrt(n));
+     final int precision=50;
+     int ctr=0;
+     double sqrt=1,step=1;
+     while(sqrt*sqrt<n)
+     {
+        sqrt*=2;
+        step*=2;
+     }
+     do{
+       step/=2;       
+       if(sqrt*sqrt>n)
+       sqrt-=step;
+       else
+       sqrt+=step;       
+       }while(++ctr<precision);    
+     System.out.println("calculated sqrt : \t"+sqrt);     
+}
+}
