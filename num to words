@@ -1,0 +1,153 @@
+
+/**
+ * Write a description of class num_to_word here.
+ * 
+ * @author (your name) 
+ * @version (a version number or a date)
+ */
+import java.io.*;
+public class num_to_word
+{public static int search(int l,int u,int n)
+{int no[]={1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,30,40,50,60,70,80,90,2,3,6,9};
+int mid,pos=-1;
+ while(l<=u)
+ {mid=(l+u)/2;
+     if(n>no[mid])
+     l=mid+1;
+     else if(n<no[mid])
+     u=mid-1;
+     else
+     {pos=mid;
+      break;}
+ }
+ return pos;
+}
+public static String word(int n)
+{String s[]={"one ","two ","three ","four ","five ","six ","seven ","eight ","nine ","ten ","eleven ","twelve ","thirteen ","fourteen ","fifteen ","sixteen ","seventeen ","eighteen ","nineteen ","twenty ","thirty ","forty ","fifty ","sixty ","seventy ","eigthty ","ninety ","hundred ","thousand ","million ","billion "};
+String w=s[n];
+return w;
+}
+public static String get1(int n)
+{int pos=search(0,8,n);
+ String s="";
+ if(pos>-1)
+ s=word(pos);
+ return s;
+}
+public static String get2(int n)
+{int pos=search(9,26,n);
+ String s="";
+ if(pos>-1)
+ s=word(pos);
+ return s;
+}
+public static String get10(int n)
+{int pos=search(27,30,n);
+ String s="";
+ if(pos>-1)
+ s=word(pos);
+ return s;
+}
+public static String get3(int n,boolean b)
+{if(n==0)
+ return " ";
+ String res="",s="",s2=""; 
+ int p1=n/100,p2=n%100,p3,p4; 
+ boolean stat=false; 
+ s=get1(p1); 
+ res=res+s;
+ if(!(s.equals(""))) 
+ {stat=true;
+ res=res+get10(2);//+"and ";
+ } 
+ s=get2(p2);
+ if(!(s.equals("")))
+ {
+    if(stat)
+    res=res+"and "; 
+    else if(b)
+    res=res+"and ";
+ res=res+s;
+}
+ else
+ {p4=p2%10;
+  p3=p2-p4;
+  s=get2(p3);
+  s2=get1(p4);
+  if(s.equals("")&&s2.equals(""))
+  ;
+  else
+  if(b)
+  res=res+"and ";
+  else if(stat)
+  res=res+"and ";
+  res=res+s;
+  s=get1(p4);  
+  res=res+s;  
+}
+return res;
+}
+public static int num_digit(long n)
+{   int no=0;
+    for(;n>=(Math.pow(10,no));no++);
+    return no;
+}
+public static boolean check_number(String s)//check whether argument is a number
+  {int l=s.length();
+      char ch;
+      boolean b=true;
+      if(l==0)
+      b=false;
+      for(int i=0;i<l;i++)
+      {ch=s.charAt(i);
+          if(ch<='0'||ch>='9')
+          {
+          b=false;
+          break;
+          }
+       }
+       return b;
+    }
+public static void convert(long n)
+{int d=num_digit(n)-1;
+ int p=0;
+ String s,res="";
+ boolean b=false;
+ for(d=d-d%3;d>=3;d-=3)
+ {   b=true;
+     p=(int)(n/(int)(Math.pow(10,d)));
+     p=p%1000;
+     //if(n%Math.pow(10,d)==0)
+    //s=get3(p,b);
+    // else
+     s=get3(p,false);
+     if((s.equals("")||s.equals(" ")||s.equals("  ")))
+     ;
+     else
+     res=res+s+get10(d);
+}
+p=(int)(n%1000);
+s=get3(p,b);
+res=res+s;  
+System.out.print("\n\t"+res);    
+}    
+public static void main()throws IOException
+{InputStreamReader isr=new InputStreamReader(System.in);
+ BufferedReader br=new BufferedReader(isr);
+ String st;
+ //do{
+ System.out.println("\f\n\tenter number");
+ System.out.print("\n\t");
+ st=br.readLine();
+
+long i=Long.parseLong(st);
+if(i==0)
+System.out.print("\n\tzero");    
+else
+convert(i); 
+
+//}while(true);
+}
+}
+
+
