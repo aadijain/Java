@@ -1,0 +1,48 @@
+public class card_count
+{ 
+  final static int max=(int)Math.pow(10,1);
+  public static void main2()
+  { 
+   //spelling out each card in specified order on the deck gives the current spelled card
+   //each card is to be removed once used
+   //cards used are put at the back of the deck   
+  String card[][]={{"ace","two","three","four","five","six","seven","eight","nine","ten"},
+                    {"club","heart","spade","diamond"}}; 
+  int res[] = getDeck(card);
+  print(card,res);
+  }
+  public static void print(String card[][],int res[])
+  {
+   int ctr=0;      
+   System.out.println("\fCards Are:\n");
+   for(;ctr<card[0].length-1;ctr++)
+   System.out.print(card[0][ctr]+" > ");
+   System.out.println(card[0][ctr]);
+   for(ctr=0;ctr<card[1].length-1;ctr++)
+   System.out.print(card[1][ctr]+" > ");
+   System.out.println(card[1][ctr]);      
+   for(ctr=0;ctr<res.length;ctr++)
+   //System.out.print("\n"+(ctr+1)+": "+card[0][(res[ctr]/max)-1]+" "+card[1][res[ctr]%max]);
+   System.out.print("\n"+((res[ctr]%max)*card[0].length+res[ctr]/max)+": "+card[0][(res[ctr]/max)-1]+" "+card[1][res[ctr]%max]);
+  }  
+  public static int[] getDeck(String card[][])
+  {
+   int res[]=new int[card[0].length*card[1].length];   
+   int card_no=0,index=0,sum=0,suit_no=0;
+   while(suit_no!=card[1].length)
+   {         
+       if(res[index]==0&&sum++==card[0][card_no].length()+card[1][suit_no].length())
+       {
+        sum=0;        
+        res[index]=++card_no*max+suit_no;
+        if(card_no==card[0].length)
+        {
+         card_no=0;
+         suit_no++;
+        }
+       }
+       index=++index%res.length;       
+   }     
+   return res;   
+  }
+}
