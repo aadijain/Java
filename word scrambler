@@ -1,0 +1,383 @@
+import java.io.*;
+import java.util.*;
+public class Word_Scrambler
+{ public static String tips[]= {"You Can Enter Negative Time To Play Without Any Time Limit",
+                                "You Can Enter Capital Letters, The Game Is Not Case Sensitive",
+                                "Most Words Have More Than One Answer, Dont Waste Your Tries",
+                                "You Can Press Any Key Besides N Or R To Play Again",
+                                "When Restarting You Can Change The Word Size And Time Limit",
+                                "Think Of Common Word Prefixes And Suffixes",
+                                "The Jumbled Word Itself May Be A Word",
+                                "Sometimes Long Words Are Formed From Combining Shorter Ones",
+                                "The Game Uses Words From A British Dictionary"};
+ public static void main()throws InterruptedException
+ { dictionary.word();                                               
+   boolean b=true,restart=true,stat=false;
+   Scanner sc=new Scanner(System.in);
+   Random r=new Random();
+   String n;   
+   game t2;
+   char input2='\u0000';
+   int time_s=0,word_size=0,no_of_tries=5,ctr,total=0,gamecount=0,time_count;
+   outer:
+   do{
+   try{
+   if(restart)
+   { stat=false;
+     sc=new Scanner(System.in);
+     System.out.println("\f\nEnter word size");
+     word_size=sc.nextInt();
+     System.out.println("\nEnter time in seconds");
+     time_s=sc.nextInt();
+     restart=false;   
+     if(word_size<=0)   
+     {stat=true;
+      System.out.println("\fInvalid Word Size. Restarting..");}
+     else if(word_size>dictionary.dict.length||dictionary.dict[word_size-1].length==0)
+     {stat=true;
+     System.out.println("\fNo Words Of Specified Length Are Present. Restarting..");}
+   }
+      }
+   catch(Exception e)
+   {System.out.println("\fInvalid Input! Enter Again");
+    stat=true;}      
+   if(stat)
+   { 
+    try{Thread.sleep(3000);}     
+    catch(InterruptedException e){}
+    restart=true;
+    continue;
+   }
+  
+   t2=new game(time_s,word_size);    
+   t2.start();
+   System.out.print("\f");
+   try{Thread.sleep(200);}
+   catch(Exception e){} 
+   for(ctr=1;ctr<=no_of_tries&&!t2.stop&&t2.isAlive();ctr++)
+   {  
+   System.out.println("\nTry "+ctr+": ");   
+   n=sc.next();
+   if(t2.isAlive())
+   t2.input=n.toLowerCase();
+   else
+   input2=n.charAt(0);
+   t2.count++;
+ 
+   while(!t2.status&&t2.isAlive())
+   {try{
+     Thread.sleep(100);
+      }
+   catch(InterruptedException e){}}
+  
+   }
+   
+   t2.stop$();  
+   
+   if(ctr==no_of_tries+1&&!t2.victory)
+   {System.out.println("\f\nTip: "+tips[r.nextInt(tips.length)]); 
+    System.out.println("\n\nSorry Out Of Tries");
+   }  
+   
+   total+=t2.score;
+   gamecount++;
+   try{
+     Thread.sleep(500);
+      }
+   catch(InterruptedException e){}
+  
+   if(input2=='\u0000')
+   input2=sc.next().charAt(0);
+   
+   if(input2=='n'||input2=='N')
+   b=false;
+   else if(input2=='r'||input2=='R')
+   {restart=true;
+    System.out.println("\nTotal Score : "+total);
+    System.out.println("Games Played : "+gamecount);     
+    try{Thread.sleep(3000);}     
+    catch(InterruptedException e){}    
+    total=0;
+    gamecount=0;
+   }
+   input2='\u0000';
+  }while(b);
+ 
+   sc.close();
+   System.out.println("\nTotal Score : "+total);
+   System.out.println("Games Played : "+gamecount);
+}
+
+}
+
+
+
+public class timer extends Thread
+{boolean stop;
+ int i;
+ public timer(int t)
+ {stop=false;
+  this.i=t;
+ } 
+ public void run()
+ { 
+   for(;i>0&&(!stop);i--)
+   {
+      try{
+          sleep(1000);
+         }
+      catch(InterruptedException e){
+          System.out.println("Timer interrupted");
+        break;}
+   }
+  
+  }
+  public void stop$()
+ {stop=true;
+  }
+}
+
+import java.io.*;
+import java.util.*;
+public class dictionary
+{  //To add a word to the dictionary you must follow these rules:
+
+   //the word should be added to the file "dictionary x" 
+   //it should be added at its alphabetical position
+   //it must only contain lower case letters - no ' symbol either
+   //it must have a maximum of 30 letters   
+   
+   //To remove a word simply delete it such that there is no empty line in its place
+   
+   //finally save the file and restart the game  
+   
+   public static short[] l= count_word();
+   public static String[][] dict=
+                   {new String [l[0]],                   new String [l[1]],
+                    new String [l[2]],                   new String [l[3]],
+                    new String [l[4]],                   new String [l[5]],
+                    new String [l[6]],                   new String [l[7]],
+                    new String [l[8]],                   new String [l[9]],
+                    new String [l[10]],                  new String [l[11]],
+                    new String [l[12]],                  new String [l[13]],
+                    new String [l[14]],                  new String [l[15]],
+                    new String [l[16]],                  new String [l[17]],
+                    new String [l[18]],                  new String [l[19]],
+                    new String [l[20]],                  new String [l[21]],
+                    new String [l[22]],                  new String [l[23]],
+                    new String [l[24]],                  new String [l[25]],
+                    new String [l[26]],                  new String [l[27]],
+                    new String [l[28]],                  new String [l[29]],};    
+    public static void word()
+    {        
+     String s;
+     int len;
+     BufferedReader br=null;
+     for(int j=0;j<l.length;j++)
+     l[j]=0;
+    
+     try {
+     //br=new BufferedReader(new FileReader("C:\\Users\\Jains\\Desktop\\aadi\\school\\BlueJ\\dictionary x.txt"));      
+     br=new BufferedReader(new FileReader("C:/Users/Jains/Desktop/aadi/school/BlueJ/dictionary x.txt"));
+     do{
+          s=br.readLine();
+          if(s==null)
+          break;        
+          len=s.length();                
+          dict[len-1][l[len-1]]=s;         
+          l[len-1]++;
+     }while(true);       
+     
+     br.close();      
+     }
+     catch(Exception e){}        
+    }     
+    
+    public static int getPos(String s,int l)
+    {
+     int status=-1;    
+     int up=dict[l-1].length-1,low=0,mid=0;    
+     while(low<=up)
+     {  mid=(up+low)/2;
+         if(s.compareTo(dict[l-1][mid])>0)
+         low=mid+1;
+         else if(s.compareTo(dict[l-1][mid])<0)
+         up=mid-1;
+         else
+         {status=mid;
+          break;
+         }
+        }
+     return status ;
+    }
+        
+    public static String getWord(int l)
+    {   String s;        
+        Random r=new Random();   
+        int b=dict[l-1].length;        
+        s=dict[l-1][r.nextInt(b)];
+        return s;        
+    }  
+    
+     public static short[] count_word()
+    {    short i[]=new short[30];
+         int l;
+         String s;   
+         try{
+          BufferedReader br=new BufferedReader(new FileReader("C:\\Users\\Jains\\Desktop\\aadi\\school\\BlueJ\\dictionary x.txt"));      
+          do{
+          s=br.readLine();        
+          l=s.length();       
+          i[l-1]++;
+          }while(s!=null);          
+          }
+         catch(Exception e){}    
+         return i;
+    }  
+    
+    public static StringBuffer jumble(String s)
+    { 
+      StringBuffer s2=new StringBuffer(s);
+      Random r=new Random();
+      int a,b,l=s2.length();
+      char temp;     
+      for(int i=0;i<3*l;i++)
+      {a=r.nextInt(l);
+       b=r.nextInt(l);
+       temp=s2.charAt(a);
+       s2.setCharAt(a,s2.charAt(b));
+       s2.setCharAt(b,temp);
+      }
+     
+      return s2;
+    }
+    
+    public static String sortletter(String s)
+    {          
+        int l=s.length();
+        char letter[]=new char[l];
+        char temp;
+        for(int ctr=0;ctr<l;ctr++)
+        letter[ctr]=s.charAt(ctr);
+        
+        
+          for(int i=0;i<l-1;i++)
+           {for(int j=0;j<l-1-i;j++)
+              {if(letter[j]>(letter[j+1]))                
+                     {temp=letter[j];
+                      letter[j]=letter[j+1];
+                      letter[j+1]=temp;
+                    }
+              }
+           }                  
+        
+        s=""; 
+        for(int ctr2=0;ctr2<l;ctr2++)
+        s=s+letter[ctr2];
+       
+        return s;
+    }
+    
+    import java.util.*;
+
+public class game extends Thread
+{
+ boolean stop,status,can_start,victory;
+ String input;
+ int old,count;
+ int score,times,size;
+ timer t;
+ 
+ public game(int tx,int sizex)
+ {stop=false;
+  status=false;
+  input=" ";
+  old=0;
+  count =0;
+  score=0;  
+  t=new timer(tx);
+  size=sizex;
+  can_start=false;
+  victory=false;
+  } 
+ 
+ public void run()throws IllegalMonitorStateException 
+ {
+          int falses=0;
+          int pos=-1;        
+          Random r=new Random(); 
+          String s=dictionary.getWord(size);
+          s=dictionary.sortletter(s);
+          
+          int l=dictionary.dict[size-1].length;
+          byte check[]=new byte[l];
+                   
+          for(int ctr=0;ctr<l;ctr++)
+          {if(dictionary.sortletter(dictionary.dict[size-1][ctr]).equals(s))
+           check[ctr]=2;
+           else 
+           {check[ctr]=0;
+            falses++;
+           }
+          } 
+          
+          System.out.println("\f"+dictionary.jumble(s));
+          can_start=true;
+          t.start();  
+          
+    outer: while(!stop)
+    {
+     old=count;
+     status=false;
+     while(old==count&&!stop)
+     {if(t.i==0)
+      {   System.out.println("\f\nTip: "+Word_Scrambler.tips[r.nextInt(Word_Scrambler.tips.length)]); 
+          System.out.println("\n\nSorry Time Up");
+          status=true;
+          break outer;
+       }
+               
+     try{sleep(200);}
+     catch(InterruptedException e){}
+    }
+    
+    status=true;
+    
+    try{sleep(200);}
+    catch(InterruptedException e){}
+    
+     pos=dictionary.getPos(input,size);     
+     if(pos!=-1)
+     {
+     if(check[pos]==2)
+     {check[pos]=1;
+      score+=10;
+      falses++;
+     }
+     if(falses==l)
+     {System.out.println("\f\nTip: "+Word_Scrambler.tips[r.nextInt(Word_Scrambler.tips.length)]);
+      System.out.println("\n\nGood Job!");
+      victory=true;
+      break outer;
+     }
+     }
+   }   
+ 
+    System.out.println("\n\nPossible Word(s) :");
+    for(int i=0;i<l;i++)
+    {if(check[i]!=0)
+     System.out.print(dictionary.dict[size-1][i]+"  ");
+    }
+    System.out.println("");    
+    System.out.println("\n\nScore is: "+score);    
+    System.out.println("\n\nTry Again ? y/n");
+    System.out.println("Restart ? r");
+ 
+ }
+ public void stop$()
+ {stop=true;
+  status=true;
+  t.stop$();
+ }  
+}
+}
