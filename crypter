@@ -1,0 +1,125 @@
+
+import java.io.*;
+public class crypter
+{
+   public static void main()throws IOException
+        {
+         InputStreamReader isr=new InputStreamReader(System.in);
+         BufferedReader br=new BufferedReader(isr);
+         System.out.println("\fwhat do you want to do?");
+         System.out.println("1.encrypt");
+         System.out.println("2.decrypt");
+         System.out.println("enter your choice");
+         int a=Integer.parseInt(br.readLine());
+         int b=93,l;
+         String s;
+         switch(a)
+         {case 1:
+                System.out.println("\fenter sentence to be encrypted");
+                s=br.readLine();
+                System.out.println("\fenter coding level");
+                l=Integer.parseInt(br.readLine());
+                    for(int i=1;i<=l;i++)
+                        s=convert(s,b);
+                System.out.println("encrypted,    "+s);  
+                for(int i=1;i<=l;i++)
+                    s=decrypter.unconvert(s,b);
+                 System.out.println("decrypted,    "+s); 
+                 break;
+          case 2:
+                System.out.println("\fenter sentence to be decrypted");
+                s=br.readLine();
+                System.out.println("\fenter coding level");
+                l=Integer.parseInt(br.readLine());         
+                for(int i=1;i<=l;i++)
+                    s=unconvert(s,b);
+                System.out.println("decrypted,      "+s); 
+                for(int i=1;i<=l;i++)
+                    s=encrypter.convert(s,b);
+                System.out.println("reencrypted,    "+s); 
+                break;
+          default:System.out.println("Invalid Choice");
+        }         
+}
+public static String unconvert(String s,int base)
+   {  String s2="",sub="";
+       int l=s.length();
+       char ch,ch2;
+       int a=0;
+       
+       for(int i=0;i<=l-3;i+=3)
+       {sub=s.substring(i,i+3);
+         a=code_int(sub,base);
+         ch=(char)(a%1000);
+         ch2=(char)(a/1000);
+         s2=s2+ch2+ch;
+  
+        }
+        return s2;  
+    }
+         public static int code_int(String n,int base)
+     {
+      int l=n.length();
+      char ch;
+      int sum=0;
+      int a=0;
+      for(int i=0;i<l;i++)
+      {
+          ch=n.charAt(l-1-i);
+          int pow=(int)(Math.pow(base,i));
+          a=(int)ch;
+          a-=32;
+          sum=sum+(a*pow);
+      }
+      sum-=8648;  
+      return sum ; 
+    }  
+    public static String convert(String s,int base)
+   {       String s2="";
+           int l=s.length();
+           if(l%2!=0)
+           s=s+" ";
+           char ch;
+           int a=0;
+           
+           for(int i=0;i<l;i++)
+           {ch=s.charAt(i);
+            a=(int)ch;
+            ch=s.charAt(++i);
+            a=a*1000;
+            a+=(int)ch;
+            s2=s2+int_code(a,base);
+        }
+        return s2;
+    }
+    public static String int_code(int n,int base)
+    {n+=8648;
+     String s1="",s2="";
+     char ch;
+     int a;
+     while(n>0)   
+      { a=n%base;
+        n=n/base;
+        ch=(char)(a+32);
+        s1=s1+ch;
+      }
+      int l=s1.length();
+      for(l=l-1;l>=0;l--)
+      s2=s2+s1.charAt(l);
+      return(s2);
+     }
+     public static void start(int b)throws IOException
+     {   InputStreamReader isr=new InputStreamReader(System.in);
+         BufferedReader br=new BufferedReader(isr);
+         System.out.println("\fenter sentence to be encrypted");
+         String s=br.readLine();
+         System.out.println("\fenter coding level");
+         int l=Integer.parseInt(br.readLine());
+         for(int i=1;i<=l;i++)
+         s=convert(s,b);
+         System.out.println("encrypted,    "+s);  
+         for(int i=1;i<=l;i++)
+         s=decrypter.unconvert(s,b);
+         System.out.println("decrypted,    "+s); 
+        }
+}
