@@ -1,0 +1,70 @@
+public class graph
+{ 
+  public static void main()
+  {
+   System.out.println("\f");
+   final int l=15;
+   //final float scale=1.0f;
+   float arr [][]=new float[2][2*l+1];  
+   int ctr=0;
+   for(ctr=0;ctr<=2*l;ctr++)
+   {
+    arr[0][ctr]=ctr;
+    arr[1][ctr]=f(ctr-l);
+   }
+   sort(arr);   
+   for(ctr=1;ctr<=2*l;ctr++)
+   {
+    if(arr[1][ctr]==arr[1][ctr-1])
+    {space(Math.abs(arr[0][ctr]-arr[0][ctr-1])-1);
+     System.out.print("-");
+    }
+    else
+    {
+     line(arr[1][ctr-1]-arr[1][ctr]);
+     space(Math.abs(arr[0][ctr]));
+     System.out.print("*");
+    }
+    }
+  }
+  
+  public static void space(float n)
+  {
+   for(int ctr=1;ctr<=n;ctr++)
+   System.out.print(" ");
+  }
+  
+  public static void line(float n)
+  {
+   //n=(float)Math.ceil(n);
+   for(float ctr=1; ctr<=n; ctr++)
+   System.out.print("\n");
+  }
+  
+  public static float f(float n)
+  {
+    float res= n*n+n*2+8 ;
+    return res;   
+  }
+  
+  public static void sort(float arr[][])
+  {
+   float temp;
+   for(int i=0; i<arr[0].length-1;i++)
+   {
+    for(int j=0;j<arr[0].length-i-1;j++)
+    {
+     if(arr[1][j]<arr[1][j+1])
+     {
+     temp=arr[0][j];
+     arr[0][j]=arr[0][j+1];
+     arr[0][j+1]=temp;
+     temp=arr[1][j];
+     arr[1][j]=arr[1][j+1];
+     arr[1][j+1]=temp;
+     }
+    }
+   }
+  }
+     
+  }
