@@ -1,0 +1,123 @@
+import java.io.*;
+import java.util.*;
+public class catalan
+{
+    public static long calc(int n)
+    {
+        long res=1;
+        for(int i=0;i<n;i++)
+        {
+            res*=2*(2*i+1);
+            res/=i+2;
+        }
+        return res;
+    }    
+    public static void print2(int n)throws IOException
+    {
+        FileWriter fstream = new FileWriter("j:\\file1.txt");
+        BufferedWriter br = new BufferedWriter(fstream);
+        int i,no,a,b,ctr=0,n0,n1;
+        String s;
+        a=(int)(Math.pow(4,n)-1)*2/3;
+        b=(int)((Math.pow(2,n)-1)*Math.pow(2,n));
+        //System.out.println("\freqd combinations");
+        outer:
+        for(i=a;i<=b;i+=2)
+        {
+            n0=0;n1=0;
+            no=i;
+            s="";
+            while(no>0)
+            {
+                if(no%2==0)
+                {
+                    n0++;
+                    s=s+"(";
+                }
+                else 
+                {    
+                    s=s+")";
+                    n1++;
+                }
+                if(n0<n1||n0>n)
+                    continue outer;
+                no/=2;
+            }
+            ctr++;
+            br.write(" "+s);
+        }
+        //System.out.println("total number: "+ctr);
+        br.close();
+    }
+    public static int getarr(int n,String arr[])
+    {
+        int i,no,a,b,ctr=0,n0,n1;
+        String s;
+        a=(int)(Math.pow(4,n)-1)*2/3;
+        b=(int)((Math.pow(2,n)-1)*Math.pow(2,n));
+        outer:
+        for(i=a;i<=b;i+=2)
+        {
+            n0=0;n1=0;
+            no=i;
+            s="";
+            while(no>0)
+            {
+                if(no%2==0)
+                {
+                    n0++;
+                    s=s+"(";
+                }
+                else 
+                {    
+                    s=s+")";
+                    n1++;
+                }
+                if(n0<n1||n0>n)
+                    continue outer;
+                no/=2;
+            }
+            arr[ctr++]=s;
+        }
+        return ctr;
+    }    
+    public static boolean check(int n) throws IOException
+    {
+        Scanner sc=new Scanner(new File("j:\\file1.txt"));
+        int l=sc.nextInt(),l2=0,i=0;    
+        
+        String s1[]=new String[l];
+        String s2[]=new String[l];    
+        
+        l2=getarr(n,s2);
+        if(l!=l2)
+        return false;
+        
+        while(sc.hasNext())
+        s1[i++]=sc.next();      
+        sort(s1);
+        sort(s2);
+        
+        for(i=0;i<l;i++)
+        {
+            if(!(s1[i].equals(s2[i])))
+            return false;
+        }   
+        
+        return true;
+    }
+    public static void sort(String arr[])
+    {
+        String temp;
+        for(int i=0;i<arr.length;i++)
+        {  for(int j=0;j<arr.length-i-1;j++)
+           {
+               if(arr[j+1].compareTo(arr[j])<0)
+                { temp=arr[j];
+                    arr[j]=arr[j+1];
+                    arr[j+1]=temp;
+                }
+           }
+        }
+    }
+}
