@@ -1,0 +1,113 @@
+public class Prime
+{
+  public static void fermat(int n)
+  {
+   final int a=2;
+   long pow=a*a;
+   System.out.println("\f");
+   //if((pow-a)%2==0)
+   //System.out.println(2);
+   pow*=a;
+   for(int i=3;i<=n;i+=2)
+   {
+    if((pow-a)%i==0)
+    System.out.println(i);
+    pow*=a*a;
+   }
+   if(n<2)
+   System.out.println("\f");
+  }
+  
+  public static void normal(int n)
+  {  
+   System.out.println("\f");
+   System.out.println(2);
+   for(int i=3;i<=n;i+=2)
+   {
+    if(isPrime(i))
+    System.out.println(i);
+   }
+   //if(n<2)
+   //System.out.println("\f");
+  }
+  public static boolean isPrime(int n)//does not check obvious numbers
+  {
+  // if(n%2==0&n!=2)
+   //return false;
+   final int l=(int) Math.sqrt(n);
+   for(int i=3;i<=l;i+=2)
+   {
+    if(n%i==0)
+    return false;
+   }
+   return true;
+  }
+  
+  public static void list(int n)
+  {
+      final int l = (int)(n/Math.log(n)*7);      
+      int prime[]=new int[l];
+      prime[0]=2;
+      int ctr=1,sq;      
+      System.out.println("\f2");
+      outer:
+      for(int i=3;i<=n;i++)
+      {
+       sq=(int)Math.sqrt(i);
+       for(int j=0;j<ctr&&j<=sq;j++)
+       {
+        if(i%prime[j]==0)
+        continue outer;  
+        }
+        prime[ctr]=i;
+        ctr++;
+        System.out.println(i);
+      }      
+    }
+    
+    public static void sieve(int n)
+  {
+      int i,j,temp;
+      int prime[]=new int[n];
+      System.out.println("\f");
+      for(i=2;i<=n-2;i++)
+      prime[i-2]=i;
+
+      for(i=0;i<=n-2;i++)
+      {
+          if(prime[i]!=0)
+          {
+              System.out.println(i+2);
+              for(j=2*i+2;j<=n-2;j+=i+2)
+              prime[j]=0;
+          }
+      }
+  }
+   public static void factorize(int n)
+    {
+        System.out.println("\f"+n+":");
+        for(int i=1;i<=Math.sqrt(n);i++)
+        {
+            if(n%i==0)
+            {
+                System.out.println(i+"  ");
+                n/=i;
+            }
+        }
+    }
+    public static void mersene(int n)
+    {   
+        int pow;
+        boolean status;
+        System.out.println("\fi:            2^i-1:                             prime?");
+        for(int i=3;i<=n;i+=2)
+        {
+           if(isPrime(i))
+           {
+               pow=(int) Math.pow(2,i)-1;
+               System.out.println(i+"\t\t"+pow+"\t\t\t"+isPrime(pow));
+           }
+            
+        }
+    }
+}
